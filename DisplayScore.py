@@ -13,7 +13,7 @@ from tkinter import *
 
 def init(data):
     # load data.xyz as appropriate
-    data.score = PhotoImage(file='MusicScores/Basic_Score.gif')
+    data.score = PhotoImage(file='MusicScores/Sample1.gif')
     
     
 def mousePressed(event, data):
@@ -68,7 +68,7 @@ def run(width=300, height=300):
     data = Struct()
     data.width = width
     data.height = height
-    data.timerDelay = 100 # milliseconds
+    data.timerDelay = 25 # milliseconds
     root = Tk()
     root.resizable(width=False, height=False) # prevents resizing window
     init(data)

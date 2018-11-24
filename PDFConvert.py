@@ -27,7 +27,7 @@ def toPNG(filePath, xResScale=220, yResScale=220):
     # saving
     img.save(filename=filePath[:-4]+'.png')
         
-toPNG('MusicScores/Basic_Score.pdf')
+toPNG('MusicScores/Sample1.pdf')
 
 def toGIF(filePath, xResScale=220, yResScale=220):
     # converts a pdf to PNG
@@ -48,12 +48,7 @@ def toGIF(filePath, xResScale=220, yResScale=220):
     # saving
     img.save(filename=filePath[:-4]+'.gif')
     
-toGIF('MusicScores/Basic_Score.pdf')
+toGIF('MusicScores/Sample1.pdf')
 
 
-##with Image(filename='MusicScores/Basic_Score.pdf', resolution=300) as image:
-##    image.compression_quality = 99
-##    image.save(filename='MusicScores/Basic_ScoreTest300.png')
-    
-#toPNG('MusicScores/Bach.pdf',
-#      xRes=200, yRes=200)
+
