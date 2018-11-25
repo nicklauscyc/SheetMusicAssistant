@@ -7,9 +7,9 @@ from Sounds import sounds
 
 # Updated Animation Starter Code from 112 website
 
-
+'G#4' 
 ####################################
-# customize these functions
+#    customize these functions
 ####################################
 def init(data):
     # load data.xyz as appropriate
