@@ -1,12 +1,18 @@
-# Playback the given score
+# Play notes
 # triggered from keypressed in main
 # code modified from CMU 112 website
 from tkinter import *
 from threading import Thread
 from Sounds import sounds
 
+# Updated Animation Starter Code from 112 website
+
+'G#4' 
+####################################
+#    customize these functions
+####################################
 def init(data):
-    # initialize all necessary data for playing back
+    # load data.xyz as appropriate
 
     data.track = [[1,1,1,1], [1,1,1,1], [1,0,1,0], [1,0,1,0],
                   [1,1,1,1], [1,1,1,1], [0,1,0,1], [0,1,0,1]]
@@ -21,11 +27,21 @@ def init(data):
     data.tempo = 500
     data.end = False
 
+def mousePressed(event, data):
+    # use event.x and event.y
+    pass
+
 def playNote(filename):
     # try to change it to play for shorter periods of time
     sounds.play('./'+ filename)
     
-def timerFired(canvas, data):
+def keyPressed(event, data):
+    pass
+        
+def playBack(data):
+    data.playTime += data.timerDelay
+    
+def timerFired(data):
     if data.end == False:
         data.time += data.timerDelay
             
@@ -33,7 +49,8 @@ def timerFired(canvas, data):
             print (data.trackPosition)
             bar, note = data.trackPosition
             if data.track[bar][note] == 1:
-                Thread(target=playNote, args=('Octave/C4.wav',)).start()
+                Thread(target=playNote,
+                       args=('./Sounds/PianoNotes/Piano.mf.G3.wav',)).start()
 
             # checking for bar ends
             if bar != data.lastBar:
@@ -54,6 +71,9 @@ def timerFired(canvas, data):
                 else: # last note, last bar
                     data.end = True
                     # find a way to terminate
+            
+def redrawAll(canvas, data):
+    pass
 
 ####################################
 # use the run function as-is
@@ -67,20 +87,19 @@ def run(width=300, height=300):
         redrawAll(canvas, data)
         canvas.update()    
 
-##    def mousePressedWrapper(event, canvas, data):
-##        mousePressed(event, data)
-##        redrawAllWrapper(canvas, data)
-##
-##    def keyPressedWrapper(event, canvas, data):
-##        keyPressed(event, data)
-##        redrawAllWrapper(canvas, data)
+    def mousePressedWrapper(event, canvas, data):
+        mousePressed(event, data)
+        redrawAllWrapper(canvas, data)
+
+    def keyPressedWrapper(event, canvas, data):
+        keyPressed(event, data)
+        redrawAllWrapper(canvas, data)
 
     def timerFiredWrapper(canvas, data):
-        timerFired(canvas, data)
-        redrawAllWrapper(data)
+        timerFired(data)
+        redrawAllWrapper(canvas, data)
         # pause, then call timerFired again
         canvas.after(data.timerDelay, timerFiredWrapper, canvas, data)
-    
     # Set up data and call init
     class Struct(object): pass
     data = Struct()
@@ -104,11 +123,9 @@ def run(width=300, height=300):
                             mousePressedWrapper(event, canvas, data))
     root.bind("<Key>", lambda event:
                             keyPressedWrapper(event, canvas, data))
-
-    
     timerFiredWrapper(canvas, data)
     # and launch the app
-    # root.mainloop()  # blocks until window is closed
+    root.mainloop()  # blocks until window is closed
     
     print("bye!")
 
