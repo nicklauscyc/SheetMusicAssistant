@@ -1,8 +1,6 @@
 # sounds
-
-
-#Code taken from CMU 112 website on pyaudio
-#Code modified from https://people.csail.mit.edu/hubert/pyaudio/
+# Starter code from 112 website
+# Code modified from https://people.csail.mit.edu/hubert/pyaudio/
 
 ###########################################################################
 ######################### Playing a WAV file ##############################
@@ -17,12 +15,13 @@ from array import array
 from struct import pack
 
 def play(file):
-    CHUNK = 1024 #measured in bytes
+    CHUNK = 1024#measured in bytes
 
     wf = wave.open(file, 'rb')
 
     p = pyaudio.PyAudio()
 
+    #rate=wf.getframerate()#
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                     channels=wf.getnchannels(),
                     rate=wf.getframerate(),
@@ -30,7 +29,13 @@ def play(file):
 
     data = wf.readframes(CHUNK)
 
-    while len(data) > 0:
+    # original: while len(data) > 0
+
+    # trying to make it play for half the time
+    ogLen = len(data)/2
+    counter = 0
+    while len(data) > 0 and counter < 100:
+        counter += 1
         stream.write(data)
         data = wf.readframes(CHUNK)
 
@@ -77,3 +82,4 @@ def record(outputFile):
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+

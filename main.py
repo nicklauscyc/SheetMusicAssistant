@@ -2,7 +2,6 @@
 
 from Sounds import sounds
 from tkinter import *
-import threading
 from threading import Thread
 from image_util import *
 # edited starter code from 112 website
@@ -22,7 +21,7 @@ def init(data):
     data.bKeyHeight = 50
 
     
-    data.score = PhotoImage(file='semibreve.gif')
+    data.score = PhotoImage(file='./MusicScores/Sample1.gif')   
     data.sWidth = data.score.width()
     data.sHeight = data.score.height()
 
@@ -38,8 +37,6 @@ def generateKeys(data):
         data.whiteKeys.append(wkeyCorner)
 
 def playNote(filename):
-    start = time.time()
-    
 
     # try to change it to play for shorter periods of time
     sounds.play('./'+ filename)
@@ -124,10 +121,11 @@ def redrawAll(canvas, data):
     # draw in canvas
     drawKeyboard(canvas, data)
     
-    canvas.create_image(data.width/2, 10,
-                        image=data.score,anchor='n')
-    
-    canvas.create_text(.5*data.width, .9*data.height, fill='white',
+##    canvas.create_image(data.width/2, 10,
+##                        image=data.score,anchor='n')
+##    
+
+    canvas.create_text(.5*data.width, .9*data.height, fill='black',
                        text='Press keys: a,s,d,f,g,h,j,k,w,e,t,y,u to play notes')
 
 ####################################
@@ -138,7 +136,7 @@ def run(width=300, height=300):
     def redrawAllWrapper(canvas, data):
         canvas.delete(ALL)
         canvas.create_rectangle(0, 0, data.width, data.height,
-                                fill='black', width=0)
+                                fill='white', width=0)
         redrawAll(canvas, data)
         canvas.update()    
 
