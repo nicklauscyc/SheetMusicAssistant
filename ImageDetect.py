@@ -60,7 +60,7 @@ def locations(imageFile, scoreFile, musicType=('n',1,4),
 
     # getting vertical center of img
     imgHeight = img.shape[0]
-    imgCenY = imgHeight//2
+    imgCenY = imgHeight/2
     
     # using openCV to match img on scoreImg, match coordinates are top
     # left corner of each img template
@@ -71,16 +71,11 @@ def locations(imageFile, scoreFile, musicType=('n',1,4),
     # X coordinate is the left edge of img, Y coordinate is center of img
     allPoints = []
     for point in zip(*location[::-1]):
-        allPoints.append((point[0], point[1]+imgCenY, musicType))
+        allPoints.append((point[0], int(point[1]+imgCenY), musicType))
         
     deduped = deduplicate(allPoints)
     
     return deduped
-
-
-def classifyStave():
-    # group all notes into their respective staves
-    pass
 
 def classifyNote():
     # classify a note per stave
@@ -117,8 +112,9 @@ def resolveOverlap(symbol, overlap):
 
 def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     # for each music symbol type, identify the locations on scoreFile
+    # takes 13 seconds to run 
 
-    # dictionary of all possile music types
+    # dictionary of all possible music types
     # singleEndS is for single stave music types
     musicTypes = {'quarter':('n',1,4),
                  'minim':('n',2,4),
@@ -193,7 +189,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     ######################################################################
     if test == True:
         # change location to list of tuples of music symbol
-        location = trebleClef
+        location = doubleEnd
         
         scoreImg = cv2.imread(scoreFile, 1)
         print('entire list of tuples:')
@@ -212,4 +208,131 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
             
     ######################################################################
 
-createMusicTypes('./MusicScores/Sample1.png', test=True)
+    # classifying staves, using lists, perhaps use np arrays for fft
+    print('classifying...')
+    allStaves = singleEnd + doubleEnd
+
+
+    ########################################################
+    ## Get dimensions of each stave type, only 2 ###########
+    
+    # dimensions of each stave that's not double barred ending
+    stave = cv2.imread(template+'/singleEnd.png',1)
+    staveHeight = stave.shape[0]
+    numNotesInStave = 8
+    noteSep = staveHeight/numNotesInStave
+
+    # dimensions of each stave that has a double barred ending
+    stave2 = cv2.imread(template+'/doubleEnd.png',1)
+    staveHeight2 = stave2.shape[0]
+    noteSep2 = staveHeight2/numNotesInStave
+
+    numLines = len(allStaves) # number of lines
+    dividers = []
+
+    print(allStaves)
+    for line in range(len(allStaves)):
+        if line != len(allStaves)-1:
+            adjustY = (allStaves[line][1] + allStaves[line+1][1])//2
+
+        else: # it's the double bar ending
+            adjustY = allStaves[line][1] + 1.5*staveHeight2 
+
+        dividers.append((allStaves[line][0], adjustY, ('dvd',)))    
+
+    
+    # add dividers into list of all music objects
+    allNotesRestsBars = quarter + minim + dottedMinim + semibreve +\
+                        quarterRest + minimRest + semibreveRest +\
+                        barLine + singleEnd + doubleEnd + \
+                        trebleClef +\
+                        dividers
+
+    # sort based on Y coordinate, then X coordinate
+    allNotesRestsBars = sorted(allNotesRestsBars,
+                               key = lambda elem: (elem[1], elem[0]))
+
+    ########################################################
+    # create list of pitches ###############################
+    pitches = []
+    notesTreble = ['D6','C6','B5','A5','G5','F5','E5','D5','C5','B4',
+                   'A4','G4','F4','E4','D4','C4','B3','A3','G3']
+    print('note sep1', noteSep)
+    print('note sep2', noteSep2)
+    print('staveHeight1', staveHeight)
+    print('staveHeight2', staveHeight2)
+    for line in range(len(allStaves)):
+        pitchDict = {}
+        numNotes = 19
+        noteLines = []
+        if line < len(allStaves) - 1:
+            for i in range(numNotes):
+                pitchDict[int(allStaves[line][1]-noteSep*(numNotes-1)/2 +\
+                          noteSep*i)] = notesTreble[i]
+        else:
+            print('special case')
+            for i in range(numNotes):
+                pitchDict[int(allStaves[line][1]-noteSep2*(numNotes-1)/2 +\
+                          noteSep2*i)] = notesTreble[i]
+
+        pitches.append(pitchDict)
+    
+    lineNum = 0
+    # classify the pitches, but create list of dictionaries of pitches first
+    playBackList = []
+    playBackLine = []
+    
+    for elem in allNotesRestsBars:
+        xPosn = elem[0]
+        yPosn = elem[1]
+        if elem[2] == ('dvd',):
+            # toggle a switch in lineNum
+            lineNum += 1
+
+            # sort the playBackLine based on x Coordinate, ie item[1]
+            playBackLine = sorted(playBackLine,
+                                  key = lambda item: item[1])
+            playBackList.append(playBackLine)
+            playBackLine = []
+                                  
+        # find closes note line
+        minDiff = staveHeight
+        linePitch = -1
+        
+        if elem[2][0] == 'n':
+            for key in pitches[lineNum]:
+        
+                # finding the pitch
+                if abs(elem[1]-key) < minDiff:
+                    minDiff = abs(elem[1]-key)
+                    linePitch = key
+                    
+            print('minDiff is', minDiff, 'linePitch was', linePitch)
+            print((pitches[lineNum][linePitch],xPosn))
+
+            playBackLine.append((pitches[lineNum][linePitch],xPosn))
+
+        elif elem[2][0] == 'r':
+            playBackLine.append((0,xPosn))
+
+        elif elem[2][0] == 'barline':
+            playBackLine.append(('|',xPosn))
+
+    print(playBackList)
+def classifyStave(scoreFile):
+    # group all notes into their respective staves
+
+    # unpacking different lists of tuples
+    allTypes = createMusicTypes(scoreFile)
+
+    quarter, minim, dottedMinim, semibreve = \
+             allTypes[0], allTypes[1], allTypes[2], allTypes[3]
+    
+    quarterRest, minimRest, semibreveRest = \
+                 allTypes[4], allTypes[5], allTypes[6], allTypes[7]
+    
+    trebleClef, barLine, singleEnd, doubleEnd = \
+                allTypes[8], allTypes[9], allTypes[10], allTypes[11]
+    
+
+createMusicTypes('./MusicScores/Sample1.png', test=False)
