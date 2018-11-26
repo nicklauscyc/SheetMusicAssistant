@@ -6,6 +6,9 @@ def deduplicate(allPoints, bounds=10):
     # takes in allPoints list of tuples from locations(),
     # and returns a list of tuples that is deduplicated
 
+    if allPoints == []: # object not found
+        return []
+    
     # sort the tuples based on x and y coordinates in
     # ascending order via a lambda function
     sortedPoints = sorted(allPoints,
@@ -72,21 +75,10 @@ def locations(imageFile, scoreFile, musicType=('n',1,4),
     allPoints = []
     for point in zip(*location[::-1]):
         allPoints.append((point[0], int(point[1]+imgCenY), musicType))
-        
+
     deduped = deduplicate(allPoints)
     
-    return deduped
-
-def classifyNote():
-    # classify a note per stave
-    pass
-
-def convertStave2List():
-    # convert a list of tuples from 1 stave to a list of lists
-    # for playback purposes and further analysis
-    
-    pass
-
+    return deduped # returns [] if nothing found
 
 ## Creating all list of tuples for each musical symbol
 
@@ -97,6 +89,12 @@ def resolveOverlap(symbol, overlap):
     # both arguments are lists of 3-tuples eg. (1082, 700, ('n',1,4)) for
     # a quarter note or (1032, 321, ('end1')) for a single end bar line
 
+    if symbol == []:
+        return []
+
+    if overlap == []: # no overlap
+        return symbol
+    
     # returns list of tuples that has false positives removed
     symbolType = symbol[0][2]
     allSymbols = overlap + symbol
@@ -231,7 +229,6 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
     trebleClef = allTypes[10]
     
     # classifying staves, using lists, perhaps use np arrays for fft
-    print('classifying...')
     allStaves = singleEnd + doubleEnd
 
 
@@ -263,12 +260,18 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
 
     
     # add dividers into list of all music objects
-    allNotesRestsBars = quarter + minim + dottedMinim + semibreve +\
+    allNotesRestsBarsP = quarter + minim + dottedMinim + semibreve +\
                         quarterRest + minimRest + semibreveRest +\
                         barLine + singleEnd + doubleEnd + \
                         trebleClef +\
                         dividers
 
+    allNotesRestsBars = []
+
+    # checks for empty elements
+    for item in allNotesRestsBarsP:
+        if item != []: allNotesRestsBars.append(item)
+            
     # sort based on Y coordinate, then X coordinate
     allNotesRestsBars = sorted(allNotesRestsBars,
                                key = lambda elem: (elem[1], elem[0]))
@@ -366,8 +369,8 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
             if i == len(line) - 1:
                 finalPlayBack.append(presentBar)
                 presentBar = []
-    
+
     return finalPlayBack
                     
 # test code
-# playBackList = convert2playable('./MusicScores/Sample1.png', test=False)
+playBackList = convert2playable('./MusicScores/Sample1.png', test=False)
