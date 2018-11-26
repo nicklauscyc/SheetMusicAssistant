@@ -205,9 +205,31 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
         # waits for any keystroke to continue to destroy all windows
         cv2.waitKey(0) 
         cv2.destroyAllWindows() 
-            
+
+
     ######################################################################
 
+    return (quarter, minim, dottedMinim, semibreve,
+            quarterRest, minimRest, semibreveRest,
+            barLine, singleEnd, doubleEnd,
+            trebleClef)
+    
+
+def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
+    # identifies the pitch
+
+    allTypes = createMusicTypes(scoreFile, template=template, test=test)
+
+    quarter, minim, dottedMinim, semibreve = allTypes[0], allTypes[1],\
+                                             allTypes[2], allTypes[3]
+
+    quarterRest, minimRest, semibreveRest = allTypes[4], allTypes[5],\
+                                            allTypes[6]
+
+    barLine, singleEnd, doubleEnd = allTypes[7], allTypes[8], allTypes[9]
+
+    trebleClef = allTypes[10]
+    
     # classifying staves, using lists, perhaps use np arrays for fft
     print('classifying...')
     allStaves = singleEnd + doubleEnd
@@ -230,7 +252,6 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     numLines = len(allStaves) # number of lines
     dividers = []
 
-    print(allStaves)
     for line in range(len(allStaves)):
         if line != len(allStaves)-1:
             adjustY = (allStaves[line][1] + allStaves[line+1][1])//2
@@ -257,10 +278,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     pitches = []
     notesTreble = ['D6','C6','B5','A5','G5','F5','E5','D5','C5','B4',
                    'A4','G4','F4','E4','D4','C4','B3','A3','G3']
-    print('note sep1', noteSep)
-    print('note sep2', noteSep2)
-    print('staveHeight1', staveHeight)
-    print('staveHeight2', staveHeight2)
+    
     for line in range(len(allStaves)):
         pitchDict = {}
         numNotes = 19
@@ -270,7 +288,6 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
                 pitchDict[int(allStaves[line][1]-noteSep*(numNotes-1)/2 +\
                           noteSep*i)] = notesTreble[i]
         else:
-            print('special case')
             for i in range(numNotes):
                 pitchDict[int(allStaves[line][1]-noteSep2*(numNotes-1)/2 +\
                           noteSep2*i)] = notesTreble[i]
@@ -306,33 +323,51 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
                 if abs(elem[1]-key) < minDiff:
                     minDiff = abs(elem[1]-key)
                     linePitch = key
-                    
-            print('minDiff is', minDiff, 'linePitch was', linePitch)
-            print((pitches[lineNum][linePitch],xPosn))
 
-            playBackLine.append((pitches[lineNum][linePitch],xPosn))
+            playBackLine.append((pitches[lineNum][linePitch],xPosn,elem[2]))
 
         elif elem[2][0] == 'r':
-            playBackLine.append((0,xPosn))
+            playBackLine.append((0,xPosn,elem[2]))
 
         elif elem[2][0] == 'barline':
-            playBackLine.append(('|',xPosn))
+            playBackLine.append(('|',xPosn,elem[2]))
 
-    print(playBackList)
-def classifyStave(scoreFile):
-    # group all notes into their respective staves
-
-    # unpacking different lists of tuples
-    allTypes = createMusicTypes(scoreFile)
-
-    quarter, minim, dottedMinim, semibreve = \
-             allTypes[0], allTypes[1], allTypes[2], allTypes[3]
+    return playBackList
     
-    quarterRest, minimRest, semibreveRest = \
-                 allTypes[4], allTypes[5], allTypes[6], allTypes[7]
-    
-    trebleClef, barLine, singleEnd, doubleEnd = \
-                allTypes[8], allTypes[9], allTypes[10], allTypes[11]
-    
+def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
+    # group all notes into their respective staves to enable playback in
+    # Tkinter, returns list of list of playable notes
 
-createMusicTypes('./MusicScores/Sample1.png', test=False)
+    playBackList = identifyPitch(scoreFile, template=template, test=test)
+
+    finalPlayBack = []
+    presentBar = []
+    
+    for line in playBackList:
+        # goes through each line of music
+        for i in range(len(line)):
+
+            playInfo = line[i][0]
+            musicType = line[i][2] # this is a tuple
+
+            if playInfo == '|':
+                finalPlayBack.append(presentBar)
+                presentBar = []
+                
+            elif type(playInfo) == str:
+                presentBar.append(playInfo)
+                for beat in range(1,musicType[1]):
+                    presentBar.append('1'+playInfo)
+                    
+            elif playInfo == 0:
+                for beat in range(musicType[1]):
+                    presentBar.append(playInfo)
+
+            if i == len(line) - 1:
+                finalPlayBack.append(presentBar)
+                presentBar = []
+    
+    return finalPlayBack
+                    
+# test code
+# playBackList = convert2playable('./MusicScores/Sample1.png', test=False)
