@@ -127,9 +127,19 @@ class FileNavigation(Screen):
                     PDFConvert.toGIF('./MusicScores/' + file)
                     PDFConvert.toPNG('./MusicScores/' + file)
                     data.activeScreen = 'main'
+
+            
+                    
+                    data.track = []
                     data.scoreFile = file
                     data.score = PhotoImage(file='./MusicScores/'+ \
                                             file[:-4]+'.gif')
+                    data.track = ImageDetect.convert2playable('./MusicScores/'+\
+                                                      data.scoreFile[:-4]+\
+                                                              '.png')
+                    initForPlayBack(data) # initialize other variables
+
+                    # resets the track because new score selected
                     
 
 class MusicDisplay(Screen):
@@ -222,6 +232,7 @@ def initForPlayBack(data):
     data.time = 0
     data.tempo = 500
     data.end = False
+    data.Xposn = 0
 
 def init(data):
     startDir = os.getcwd()
@@ -233,6 +244,7 @@ def init(data):
     data.score = ''
     data.scoreFile = '' # filename, .pdf
     data.track = []
+    data.scrollScore = 0
     
 
     ''' all screens are 'main','openPDF','listen','play' '''
@@ -259,13 +271,6 @@ def mousePressed(event, data):
         # changes screen
         data.activeScreen = 'play'
         
-        if data.track == [] and data.score != '':
-            data.track = ImageDetect.convert2playable('./MusicScores/' +\
-                                                      data.scoreFile[:-4] +\
-                                                        '.png')
-            initForPlayBack(data) # initialize again
-        
-            
     data.fileNav.scoreSelected(event,data) # checks for file nav
 
 def keyPressed(event, data):
@@ -275,6 +280,7 @@ def keyPressed(event, data):
 def playNote(filename):
     # wrapper function from pyaudio's play function
     sound.play('./'+ filename)
+    return None
 
 def playBack(data):
     if data.end == False:
@@ -285,13 +291,21 @@ def playBack(data):
 
             # going to have same time for all
             bar, note = data.trackPosition
+
+            
+            if data.track[bar][note][1] < data.Xposn:
+                # time to scroll
+                #data.scrollScore += 100
+                # don't think I need
+                pass
+            data.Xposn = data.track[bar][note][1]    
+            
             noteName = './Sounds/Notes/' +\
-                       str(data.track[bar][note]) +\
+                       str(data.track[bar][note][0]) +\
                        '.wav'
-            if type(data.track[bar][note]) == str:
+            if type(data.track[bar][note][0]) == str:
                 Thread(target=playNote, args=(noteName,)).start()
             
-
             # checking for bar ends
             if bar != data.lastBar:
                 if note != data.lastNote:
@@ -311,12 +325,22 @@ def playBack(data):
                 else: # last note, last bar
                     data.end = True
                     data.activeScreen = 'main'
+                    print('end')
+                    
                     
     
 def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
         # keep calling playback until it ends
         playBack(data)
+        if data.Xposn > data.width/4*3:
+                data.scrollScore += 6
+                # try to check for number of lines
+                
+        if data.end == True:
+            initForPlayBack(data)
+            data.scrollScore = 0
+            
 
 def redrawAll(canvas, data):
     # draw in canvas
@@ -327,7 +351,6 @@ def redrawAll(canvas, data):
                                 image=data.score,anchor='n')
         Screen.drawMenuBar(canvas, data)
         
-
     elif data.activeScreen == 'openPDF':
         if data.score != '': # score is found
             canvas.create_image(data.width/2, 110,
@@ -339,12 +362,13 @@ def redrawAll(canvas, data):
     elif data.activeScreen == 'listen':
         # these two have to change because of scrolling
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110,
+            canvas.create_image(data.width/2, 110 + data.scrollScore,
                                 image=data.score,anchor='n')
         MusicDisplay.drawMenuBar(canvas, data)
     elif data.activeScreen == 'play':
+        print('playing',data.scrollScore)
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110,
+            canvas.create_image(data.width/2, 110 - data.scrollScore,
                                 image=data.score,anchor='n')
         MusicDisplay.drawMenuBar(canvas, data)
                                    

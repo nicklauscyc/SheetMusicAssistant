@@ -347,10 +347,11 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     presentBar = []
     
     for line in playBackList:
-        # goes through each line of music
+        # goes through each line of music, the whole stave  
         for i in range(len(line)):
 
             playInfo = line[i][0]
+            xPosn = line[i][1]
             musicType = line[i][2] # this is a tuple
 
             if playInfo == '|':
@@ -358,15 +359,16 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
                 presentBar = []
                 
             elif type(playInfo) == str:
-                presentBar.append(playInfo)
+                presentBar.append((playInfo,xPosn))
                 for beat in range(1,musicType[1]):
-                    presentBar.append(1)
+                    presentBar.append((1,xPosn))
                     
             elif playInfo == 0:
                 for beat in range(musicType[1]):
-                    presentBar.append(playInfo)
+                    presentBar.append((playInfo,xPosn))
 
             if i == len(line) - 1:
+                # whole line is done
                 finalPlayBack.append(presentBar)
                 presentBar = []
 
