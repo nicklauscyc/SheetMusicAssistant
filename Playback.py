@@ -3,7 +3,7 @@
 # code modified from CMU 112 website
 from tkinter import *
 from threading import Thread
-from Sounds import sounds
+from Sounds import sound
 
 # Updated Animation Starter Code from 112 website
 
@@ -14,8 +14,10 @@ from Sounds import sounds
 def init(data):
     # load data.xyz as appropriate
 
-    data.track = [[1,1,1,1], [1,1,1,1], [1,0,1,0], [1,0,1,0],
-                  [1,1,1,1], [1,1,1,1], [0,1,0,1], [0,1,0,1]]
+    data.track = [[4,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
+                [16,17,18,19], [18,17,16,15], [14,13,12,11], [10,8,6,4]]
+##    data.track = [[1,1,1,1], [1,1,1,1], [0,1,0,1], [1,1,1,1],
+##                  [1,1,1,1], [1,1,1,1], [0,1,0,1], [0,1,0,1]]
     data.lastBar = len(data.track) - 1
     data.bar = 0
     data.lastNote = len(data.track[0]) - 1
@@ -33,7 +35,7 @@ def mousePressed(event, data):
 
 def playNote(filename):
     # try to change it to play for shorter periods of time
-    sounds.play('./'+ filename)
+    sound.play('./'+ filename)
     
 def keyPressed(event, data):
     pass
@@ -44,14 +46,33 @@ def playBack(data):
 def timerFired(data):
     if data.end == False:
         data.time += data.timerDelay
-            
+
+        notes = {1:'./Sounds/Notes/G3.wav',
+                 2:'./Sounds/Notes/A3.wav',
+                 3:'./Sounds/Notes/B3.wav',
+                 4:'./Sounds/Notes/C4.wav',
+                 5:'./Sounds/Notes/D4.wav',
+                 6:'./Sounds/Notes/E4.wav',
+                 7:'./Sounds/Notes/F4.wav',
+                 8:'./Sounds/Notes/G4.wav',
+                 9:'./Sounds/Notes/A4.wav',
+                 10:'./Sounds/Notes/B4.wav',
+                 11:'./Sounds/Notes/C5.wav',
+                 12:'./Sounds/Notes/D5.wav',
+                 13:'./Sounds/Notes/E5.wav',
+                 14:'./Sounds/Notes/F5.wav',
+                 15:'./Sounds/Notes/G5.wav',
+                 16:'./Sounds/Notes/A5.wav',
+                 17:'./Sounds/Notes/B5.wav',
+                 18:'./Sounds/Notes/C6.wav',
+                 19:'./Sounds/Notes/D6.wav',}
         if data.time % data.tempo == 0 and data.time > 0:
             print (data.trackPosition)
             bar, note = data.trackPosition
-            if data.track[bar][note] == 1:
+            if data.track[bar][note] != 0:
                 Thread(target=playNote,
-                       args=('./Sounds/PianoNotes/Piano.mf.G3.wav',)).start()
-
+                       args=(notes[data.track[bar][note]],)).start()
+        
             # checking for bar ends
             if bar != data.lastBar:
                 if note != data.lastNote:
@@ -70,6 +91,7 @@ def timerFired(data):
 
                 else: # last note, last bar
                     data.end = True
+                    return None
                     # find a way to terminate
             
 def redrawAll(canvas, data):
