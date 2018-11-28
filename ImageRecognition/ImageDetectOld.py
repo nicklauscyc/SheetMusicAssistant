@@ -231,7 +231,7 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
 
     trebleClef = allTypes[10]
     
-    # classifying staves, using lists
+    # classifying staves, using lists, perhaps use np arrays for fft
     allStaves = singleEnd + doubleEnd
 
 
@@ -250,9 +250,6 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
     noteSep2 = staveHeight2/numNotesInStave
 
     numLines = len(allStaves) # number of lines
-    print('allStaves is', allStaves)
-    # allStaves is the coordinates of all staves in music
-    
     dividers = []
 
     for line in range(len(allStaves)):
@@ -333,28 +330,24 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
                     minDiff = abs(elem[1]-key)
                     linePitch = key
 
-            playBackLine.append((pitches[lineNum][linePitch],
-                                 (xPosn,yPosn),elem[2]))
+            playBackLine.append((pitches[lineNum][linePitch],xPosn,elem[2]))
 
         elif elem[2][0] == 'r':
-            playBackLine.append((0,(xPosn,yPosn),elem[2]))
+            playBackLine.append((0,xPosn,elem[2]))
 
         elif elem[2][0] == 'barline':
-            playBackLine.append(('|',(xPosn,yPosn),elem[2]))
+            playBackLine.append(('|',xPosn,elem[2]))
 
-    return (playBackList, allStaves)
+    return playBackList
     
 def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     # group all notes into their respective staves to enable playback in
     # Tkinter, returns list of list of playable notes
 
-    playBackList, allStaves = identifyPitch(scoreFile,
-                                            template=template, test=test)
+    playBackList = identifyPitch(scoreFile, template=template, test=test)
 
     for i in playBackList:
-        
-        #print(i)
-        pass
+        print(i)
         
     finalPlayBack = []
     presentBar = []
@@ -364,7 +357,7 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
         for i in range(len(line)):
 
             playInfo = line[i][0]
-            posn = line[i][1]
+            xPosn = line[i][1]
             musicType = line[i][2] # this is a tuple
 
             if playInfo == '|':
@@ -372,25 +365,25 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
                 presentBar = []
                 
             elif type(playInfo) == str:
-                presentBar.append((playInfo,posn))
+                presentBar.append((playInfo,xPosn))
                 for beat in range(1,musicType[1]):
-                    presentBar.append((1,posn))
+                    presentBar.append((1,xPosn))
                     
             elif playInfo == 0:
                 for beat in range(musicType[1]):
-                    presentBar.append((playInfo,posn))
+                    presentBar.append((playInfo,xPosn))
 
             if i == len(line) - 1:
                 # whole line is done
                 finalPlayBack.append(presentBar)
                 presentBar = []
-    #print(finalPlayBack)
-    return (finalPlayBack, allStaves)
+
+    return finalPlayBack
                     
-###test code
-##playBackList = convert2playable('./MusicScores/Goldenrod_Theme.png',
+#test code
+##playBackList = convert2playable('./MusicScores/Pokemon Goldenrod Theme.png',
 ##                                test=True)
-####print(playBackList)
+##print(playBackList)
 
 ##playBackList = convert2playable('./MusicScores/Sample1.png', test=True)
 ##print(playBackList)

@@ -134,11 +134,22 @@ class FileNavigation(Screen):
                     data.scoreFile = file
                     data.score = PhotoImage(file='./MusicScores/'+ \
                                             file[:-4]+'.gif')
-                    data.track = ImageDetect.convert2playable('./MusicScores/'+\
+                    tupData = ImageDetect.convert2playable('./MusicScores/'+\
                                                       data.scoreFile[:-4]+\
                                                               '.png')
+                    data.track, data.staves = tupData
+                    
+                    
+                        
                     initForPlayBack(data) # initialize other variables
                     print(data.track)
+                    data.numStaves = len(data.staves)
+                    print('staves is,', data.staves)
+                    
+                    data.scrollDist = []
+                    for stave in range(1,len(data.staves)):
+                        data.scrollDist.append(data.staves[stave][1]-\
+                                               data.staves[stave-1][1])
 
                     # resets the track because new score selected
                     
@@ -246,6 +257,7 @@ def init(data):
     data.scoreFile = '' # filename, .pdf
     data.track = []
     data.scrollScore = 0
+    data.scoreTop = 110
     
 
     ''' all screens are 'main','openPDF','listen','play' '''
@@ -294,12 +306,12 @@ def playBack(data):
             bar, note = data.trackPosition
 
             print(data.track[bar][note])
-            if data.track[bar][note][1] < data.Xposn:
+            if data.track[bar][note][1][0] < data.Xposn:
                 # time to scroll
                 #data.scrollScore += 100
                 # don't think I need
                 pass
-            data.Xposn = data.track[bar][note][1]    
+            data.Xposn = data.track[bar][note][1][0]    
             
             noteName = './Sounds/Notes/' +\
                        str(data.track[bar][note][0]) +\
@@ -349,13 +361,13 @@ def redrawAll(canvas, data):
 
     if data.activeScreen == 'main':
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110,
+            canvas.create_image(data.width/2, data.scoreTop,
                                 image=data.score,anchor='n')
         Screen.drawMenuBar(canvas, data)
         
     elif data.activeScreen == 'openPDF':
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110,
+            canvas.create_image(data.width/2, data.scoreTop,
                                 image=data.score,anchor='n')
             
         data.fileNav.drawMenuBar(canvas, data)
@@ -364,13 +376,13 @@ def redrawAll(canvas, data):
     elif data.activeScreen == 'listen':
         # these two have to change because of scrolling
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110 + data.scrollScore,
+            canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
                                 image=data.score,anchor='n')
         MusicDisplay.drawMenuBar(canvas, data)
     elif data.activeScreen == 'play':
         print('playing',data.scrollScore)
         if data.score != '': # score is found
-            canvas.create_image(data.width/2, 110 - data.scrollScore,
+            canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
                                 image=data.score,anchor='n')
         MusicDisplay.drawMenuBar(canvas, data)
                                    
