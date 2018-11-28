@@ -138,7 +138,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     minimSpace = locations(template+'/minimSpace.png', scoreFile,
                            musicType=musicTypes['minim'])
     
-    dottedMinimLine = locations(template+'/dottedMinimLine3.png', scoreFile,
+    dottedMinimLine = locations(template+'/dottedMinimLine.png', scoreFile,
                                 musicType=musicTypes['dottedMinim'])
     dottedMinimSpace = locations(template+'/dottedMinimSpace.png', scoreFile,
                                  musicType=musicTypes['dottedMinim'])
@@ -171,26 +171,23 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     trebleClef = locations(template+'/trebleClef.png', scoreFile,
                            musicType=musicTypes['trebleClef'])
     
-    barLineFP = locations(template+'/barLine.png', scoreFile,
+    barLineFP= locations(template+'/barLine.png', scoreFile,
                          musicType=musicTypes['barLine'])
     singleEnd = locations(template+'/singleEnd.png', scoreFile,
                           musicType=musicTypes['singleEndS'])
     doubleEnd = locations(template+'/doubleEnd.png', scoreFile,
                           musicType=musicTypes['doubleEndS'])
 
-    # barlines do overlap with singleEnds
-    barLine1 = resolveOverlap(barLineFP, singleEnd)
-
     # removing false positives for barlineFP, essentially removing
     # last element
-    barLine = barLineFP[:len(barLine1)-1]
+    barLine = barLineFP[:len(barLineFP)-1]
 
     ######################################################################
     ## Test Code for Visualization #######################################
     ######################################################################
     if test == True:
         # change location to list of tuples of music symbol
-        location = barLine
+        location = doubleEnd
         
         scoreImg = cv2.imread(scoreFile, 1)
         print('entire list of tuples:')
@@ -346,9 +343,6 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
 
     playBackList = identifyPitch(scoreFile, template=template, test=test)
 
-    for i in playBackList:
-        print(i)
-        
     finalPlayBack = []
     presentBar = []
     
@@ -380,10 +374,6 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
 
     return finalPlayBack
                     
-#test code
-##playBackList = convert2playable('./MusicScores/Pokemon Goldenrod Theme.png',
-##                                test=True)
-##print(playBackList)
-
-##playBackList = convert2playable('./MusicScores/Sample1.png', test=True)
+# test code
+##playBackList = convert2playable('./MusicScores/Sample1.png', test=False)
 ##print(playBackList)

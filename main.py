@@ -112,7 +112,7 @@ class FileNavigation(Screen):
                 canvas.create_text(0 + 10, 110 + pdfNum*80 + 40,
                                    anchor='w',
                                    text=fileName,
-                                   font='Calibri 15',
+                                   font='Calibri 11',
                                    fill=color(200,200,200))
                 pdfNum += 1
                                                         
@@ -138,6 +138,7 @@ class FileNavigation(Screen):
                                                       data.scoreFile[:-4]+\
                                                               '.png')
                     initForPlayBack(data) # initialize other variables
+                    print(data.track)
 
                     # resets the track because new score selected
                     
@@ -230,7 +231,7 @@ def initForPlayBack(data):
     data.trackPosition = (data.bar, data.note)
 
     data.time = 0
-    data.tempo = 500
+    data.tempo = 300
     data.end = False
     data.Xposn = 0
 
@@ -292,7 +293,7 @@ def playBack(data):
             # going to have same time for all
             bar, note = data.trackPosition
 
-            
+            print(data.track[bar][note])
             if data.track[bar][note][1] < data.Xposn:
                 # time to scroll
                 #data.scrollScore += 100
@@ -333,12 +334,13 @@ def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
         # keep calling playback until it ends
         playBack(data)
-        if data.Xposn > data.width/4*3:
-                data.scrollScore += 6
+        if data.Xposn > data.width/2:
+                data.scrollScore += 16
                 # try to check for number of lines
                 
         if data.end == True:
             initForPlayBack(data)
+            print(data.track)
             data.scrollScore = 0
             
 
