@@ -190,7 +190,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     ######################################################################
     if test == True:
         # change location to list of tuples of music symbol
-        location = quarter
+        location = barLine
         
         scoreImg = cv2.imread(scoreFile, 1)
         print('entire list of tuples:')
@@ -381,9 +381,9 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     return finalPlayBack
                     
 #test code
-playBackList = convert2playable('./MusicScores/Pokemon_Goldenrod_Theme.png',
-                                test=True)
-print(playBackList)
+##playBackList = convert2playable('./MusicScores/Pokemon Goldenrod Theme.png',
+##                                test=True)
+##print(playBackList)
 
 ##playBackList = convert2playable('./MusicScores/Sample1.png', test=True)
 ##print(playBackList)
