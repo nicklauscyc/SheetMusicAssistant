@@ -190,7 +190,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     ######################################################################
     if test == True:
         # change location to list of tuples of music symbol
-        location = dottedMinimLine
+        location = quarter
         
         scoreImg = cv2.imread(scoreFile, 1)
         print('entire list of tuples:')

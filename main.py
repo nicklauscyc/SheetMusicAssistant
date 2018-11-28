@@ -335,7 +335,7 @@ def timerFired(data):
         # keep calling playback until it ends
         playBack(data)
         if data.Xposn > data.width/2:
-                data.scrollScore += 16
+                data.scrollScore += 8
                 # try to check for number of lines
                 
         if data.end == True:
