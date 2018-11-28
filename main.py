@@ -142,7 +142,9 @@ class FileNavigation(Screen):
                     
                         
                     initForPlayBack(data) # initialize other variables
-                    print(data.track)
+
+
+                    # initialize the score specific variables    
                     data.numStaves = len(data.staves)
                     print('staves is,', data.staves)
                     
@@ -150,12 +152,15 @@ class FileNavigation(Screen):
                     for stave in range(1,len(data.staves)):
                         data.scrollDist.append(data.staves[stave][1]-\
                                                data.staves[stave-1][1])
-
+                    print('scroll dist is', data.scrollDist)
+                    data.scrollIndex = -1
                     # resets the track because new score selected
+                    
+                    
                     
 
 class MusicDisplay(Screen):
-    # the interface screen when playing back music
+    # the interface screen when listening to music
 
     def drawScore(self, canvas, data):
         # draws the score on the screen
@@ -246,6 +251,11 @@ def initForPlayBack(data):
     data.end = False
     data.Xposn = 0
 
+    # how to tell if score is in scrolling state
+    data.scrolling = False
+
+    
+
 def init(data):
     startDir = os.getcwd()
 
@@ -327,9 +337,23 @@ def playBack(data):
 
                 else:
                     data.bar += 1
+                    nextBar = data.bar + 1
                     data.note = 0
                     data.trackPosition = (data.bar, data.note)
                     data.lastNote = len(data.track[data.bar]) - 1
+
+                    if bar + 1 != data.lastBar: 
+                    # if next bar has first note x posn less than current
+                    # bar bar x posn, data.scrolling = true
+                        currX = data.track[data.bar][data.note][1][0]
+                        nextBarX = data.track[nextBar][data.note][1][0]
+
+                        if currX > nextBarX:
+                            data.scrolling = True
+                            data.scrollIndex += 1
+
+                        else:
+                            data.scrolling = False
             else:
                 if note != data.lastNote:
                     data.note += 1
@@ -346,9 +370,14 @@ def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
         # keep calling playback until it ends
         playBack(data)
-        if data.Xposn > data.width/2:
-                data.scrollScore += 8
                 # try to check for number of lines
+        if data.scrolling == True:
+            # scroll a specific amount as per each pair of stave dist
+            scrollIncrement = data.scrollDist[data.scrollIndex]/\
+                              (4*data.tempo/data.timerDelay)
+            
+            data.scrollScore += scrollIncrement
+            
                 
         if data.end == True:
             initForPlayBack(data)
