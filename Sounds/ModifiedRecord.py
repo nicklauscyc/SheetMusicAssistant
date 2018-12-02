@@ -16,7 +16,6 @@ import wave
 from array import array
 from struct import pack
 
-# for note detection
 import aubio
 import numpy as np
 
@@ -44,9 +43,8 @@ def play(file):
     p.terminate()
 
 ###########################################################################
-############################# Detect Note #################################
+######################### Recording a WAV file ############################
 ###########################################################################
-    
 def detectNote():
     # modified version of record function taken from 112 website
     CHUNK = 1024 #measured in bytes looks like its the buffer size
@@ -72,13 +70,13 @@ def detectNote():
     # setup pitch
     tolerance = 0.8
     hop_s = CHUNK # hop size
-    fftSize = 4096 # fft size
-    pitchBase = aubio.pitch("default", fftSize, hop_s, RATE)
+    win_s = 4096 # fft size
+    pitchBase = aubio.pitch("default", win_s, hop_s, RATE)
     pitchBase.set_unit("freq")
     pitchBase.set_tolerance(tolerance)
 
-    audioBuffer = stream.read(CHUNK)
-    signal = np.fromstring(audioBuffer, dtype=np.float32)
+    audiobuffer = stream.read(CHUNK)
+    signal = np.fromstring(audiobuffer, dtype=np.float32)
     pitch = pitchBase(signal)[0]
     confidence = pitchBase.get_confidence()
 
@@ -96,46 +94,4 @@ def detectNote():
     print(note)
     return note
 
-###########################################################################
-######################### Recording a WAV file ############################
-###########################################################################
-def record(outputFile):
-    CHUNK = 1024 #measured in bytes looks like its the buffer size
-    FORMAT = pyaudio.paFloat32
-    CHANNELS = 2 #stereo
-    RATE = 44100 #common sampling frequency
-    RECORD_SECONDS = 1 #change this record for longer or shorter!
 
-    p = pyaudio.PyAudio()
-
-    stream = p.open(format=FORMAT,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    input=True,
-                    frames_per_buffer=CHUNK)
-
-    print("* recording")
-
-    frames = []
-
-    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-        data = stream.read(CHUNK)
-        frames.append(data)
-
-    print("* done recording")
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
-    wf = wave.open(outputFile, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
-
-
-def listen():
-    for i in range(10000):
-        detectNote()
