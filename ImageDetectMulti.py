@@ -345,7 +345,8 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
     
 def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     # group all notes into their respective staves to enable playback in
-    # Tkinter, returns list of list of playable notes
+    # Tkinter, returns 2-tuple where 1st element islist of list of playable
+    # notes, second tuple is list of all stave ends
     # takes in 1 page png and returns a playBack list
 
     playBackList, allStaves = identifyPitch(scoreFile,
@@ -388,9 +389,11 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     return (finalPlayBack, allStaves)
                     
 ###test code
-playBackList = convert2playable('./MusicScores/Goldenrod_Theme.png',
+playBackList = convert2playable('./MusicScores/Goldenrod_Full-0.png',
                                 test=True)
-####print(playBackList)
+for stave in playBackList[0]:
+    print(stave)
+
 
 ##playBackList = convert2playable('./MusicScores/Sample1.png', test=True)
 ##print(playBackList)

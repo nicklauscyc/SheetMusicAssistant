@@ -14,20 +14,53 @@ def toPNG(filePath, xResScale=220, yResScale=220):
     # converts a pdf to GIF
     # for each page, say og file is Goldenrod_Full.pdf
     # output will be Goldenrod_Full-0.png, Goldenrod_Full-1.png
-    
+##    
+##    img = Image(filename=filePath, resolution=400)
+##    allPages = img.sequence
+##
+##    # just convert the whole file as 1 page for now
+##    img.format = 'png'
+##    img.background_color = Color('white')
+##    img.alpha_channel = 'remove'
+##
+##    # image resolution scale adjustment for display
+##    img.resample(x_res=xResScale, y_res=yResScale)
+##
+##    # saving
+##    img.save(filename=filePath[:-4]+'.png')
+##
+##    # returns number of pages converted
+##    return len(img.sequence)
+
     img = Image(filename=filePath, resolution=400)
-    allPages = img.sequence
 
-    # just convert the whole file as 1 page for now
-    img.format = 'png'
-    img.background_color = Color('white')
-    img.alpha_channel = 'remove'
+    if len(img.sequence) == 1:
 
-    # image resolution scale adjustment for display
-    img.resample(x_res=xResScale, y_res=yResScale)
+        # whole file as 1 page for now
+        img.format = 'png'
+        img.background_color = Color('white')
+        img.alpha_channel = 'remove'
 
-    # saving
-    img.save(filename=filePath[:-4]+'.png')
+        # image resolution scale adjustment for display
+        img.resample(x_res=xResScale, y_res=yResScale)
+
+        # saving
+        img.save(filename=filePath[:-4]+'.png')
+
+    else: # multipage image
+        
+        for i in range(len(img.sequence)):
+            indiv = Image(image=img.sequence[i], resolution=400)
+            indiv.format = 'png'
+            indiv.background_color = Color('white')
+            indiv.alpha_channel = 'remove'
+
+            # adjust resolution for display
+            indiv.resample(x_res=xResScale, y_res=yResScale)
+
+            # save it
+            indiv.save(filename=filePath[:-4]+'-'+str(i)+'.png')
+
 
     # returns number of pages converted
     return len(img.sequence)
@@ -57,7 +90,7 @@ def toGIF(filePath, xResScale=220, yResScale=220):
     else: # multipage image
         
         for i in range(len(img.sequence)):
-            indiv = Image(image=img.sequence[i])
+            indiv = Image(image=img.sequence[i], resolution=400)
             indiv.format = 'gif'
             indiv.background_color = Color('white')
             indiv.alpha_channel = 'remove'
@@ -74,6 +107,6 @@ def toGIF(filePath, xResScale=220, yResScale=220):
     
 # toGIF('MusicScores/Sample1.pdf')
 
-toGIF('MusicScores/BasicScore.pdf')
+#toGIF('MusicScores/BasicScore.pdf')
 toGIF('MusicScores/Goldenrod_Full.pdf')
-#toPNG('MusicScores/Goldenrod_Full.pdf')
+toPNG('MusicScores/Goldenrod_Full.pdf')
