@@ -244,7 +244,7 @@ def init(data):
     initForFileNavigation(data)
 
     # init for scoreDisplay
-    data.score = ''
+    data.score = '' # this will be a list of PhotoImages later
     data.scoreFile = '' # filename, .pdf
     data.track = []
     data.scrollScore = 0
@@ -507,28 +507,61 @@ def listening(data):
 def loadScore(data):
     ###################
     file = data.file2Load         
-    PDFConvert.toGIF('./MusicScores/' + file)
-    PDFConvert.toPNG('./MusicScores/' + file)
+    data.numPagesGIF = PDFConvert.toGIF('./MusicScores/' + file)
+    data.numPagesPNG = PDFConvert.toPNG('./MusicScores/' + file)
+
+    if data.numPagesGIF != data.numPagesPNG:
+        # checks for the number of pages that needs to be shown
+        print('error, different number of pages for PNG and for GIF')
+
+    else:
+        data.numPages = data.numPagesGIF
+
     data.activeScreen = 'main'
+    data.score = [] #resets the list to prevent aliasing
+    if data.numPages == 1:
+        # only 1 single page
+        data.track = []
+        data.scoreFile = file
+
+        # this is a list of 1 element
+        data.score = [PhotoImage(file='./MusicScores/'+ \
+                                file[:-4]+'.gif')]
+        tupData = ImageDetect.convert2playable('./MusicScores/'+ \
+                                          file[:-4]+'.png')
+        data.track, data.staves = tupData
 
 
-    
-    data.track = []
-    data.scoreFile = file
-    data.score = PhotoImage(file='./MusicScores/'+ \
-                            file[:-4]+'.gif')
-    tupData = ImageDetect.convert2playable('./MusicScores/'+\
-                                      data.scoreFile[:-4]+\
-                                              '.png')
-    data.track, data.staves = tupData
-    
-    
-    data.scrollScore = 0 # reset scroll back to zero
-    initForPlayBack(data) # initialize other variables for play
+        data.scrollScore = 0 # reset scroll back to zero
+        initForPlayBack(data) # initialize other variables for play
 
-    
-    initForListening(data) # initialize variables for listening
-    data.loading = False
+
+        initForListening(data) # initialize variables for listening
+        data.loading = False
+
+    else: # there were multiple pages
+        data.track = []
+        data.staves = []
+        for page in range(data.numPages):
+            fileNameNoExt = './MusicScores/' + file[:-4] + '-' + str(page)
+            print('filename no ext is',fileNameNoExt)
+
+            eachScore = PhotoImage(file=fileNameNoExt+'.gif')
+            tupData = ImageDetect.convert2playable(fileNameNoExt+'.png')
+
+            indivTrack, indivStave = tupData
+            data.track.extend(indivTrack)
+            data.staves.extend(indivStave) # list of lists, each inner list is
+            ##### u must change this to append
+            # a stave ends for 1 page
+            data.score.append(eachScore)
+            print('data.staves is', data.staves)
+            print('data.track is', data.track)
+            data.scrollScore = 0  # reset scroll back to zero
+            initForPlayBack(data)  # initialize other variables for play
+
+            initForListening(data)  # initialize variables for listening
+            data.loading = False
 
 def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
@@ -612,32 +645,32 @@ def drawGreenDots(canvas, data):
         
 def redrawAll(canvas, data):
     # draw in canvas
-
+    #print('data.score[0] is',data.score)
     if data.activeScreen == 'main':
-        if data.score != '': # score is found
+        if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop,
-                                image=data.score,anchor='n')
+                                image=data.score[0],anchor='n')
         Screen.drawMenuBar(canvas, data)
         
     elif data.activeScreen == 'openPDF':
-        if data.score != '': # score is found
+        if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop,
-                                image=data.score,anchor='n')
+                                image=data.score[0],anchor='n')
             
         data.fileNav.drawMenuBar(canvas, data)
         data.fileNav.drawScoreOptions(canvas, data)
         
     elif data.activeScreen == 'listen':
         # these two have to change because of scrolling
-        if data.score != '': # score is found
+        if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
-                                image=data.score,anchor='n')
+                                image=data.score[0],anchor='n')
             drawGreenDots(canvas, data)
         Screen.drawMenuBar(canvas, data)
     elif data.activeScreen == 'play':
-        if data.score != '': # score is found
+        if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
-                                image=data.score,anchor='n')
+                                image=data.score[0],anchor='n')
             drawGreenDots(canvas, data)
         Screen.drawMenuBar(canvas, data)
                                    

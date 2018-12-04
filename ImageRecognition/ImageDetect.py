@@ -190,7 +190,7 @@ def createMusicTypes(scoreFile, template='./MusicNotesTemplate', test=False):
     ######################################################################
     if test == True:
         # change location to list of tuples of music symbol
-        location = barLine
+        location = quarter
         
         scoreImg = cv2.imread(scoreFile, 1)
         print('entire list of tuples:')
@@ -345,7 +345,9 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
     
 def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     # group all notes into their respective staves to enable playback in
-    # Tkinter, returns list of list of playable notes
+    # Tkinter, returns 2-tuple where 1st element islist of list of playable
+    # notes, second tuple is list of all stave ends
+    # takes in 1 page png and returns a playBack list
 
     playBackList, allStaves = identifyPitch(scoreFile,
                                             template=template, test=test)
@@ -386,10 +388,13 @@ def convert2playable(scoreFile, template='./MusicNotesTemplate', test=False):
     #print(finalPlayBack)
     return (finalPlayBack, allStaves)
                     
-###test code
-##playBackList = convert2playable('./MusicScores/Goldenrod_Theme.png',
+#####test code
+##scoreDir='/home/nicklaus/Documents/15-112/SheetMusicAssistant/MusicScores/'
+##playBackList = convert2playable(scoreDir+'Goldenrod_Full-0.png',
 ##                                test=True)
-####print(playBackList)
+####for stave in playBackList[0]:
+##    print(stave)
+
 
 ##playBackList = convert2playable('./MusicScores/Sample1.png', test=True)
 ##print(playBackList)
