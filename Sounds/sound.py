@@ -93,7 +93,6 @@ def detectNote():
     stream.close()
     p.terminate()
 
-    print(note)
     return note
 
 ###########################################################################

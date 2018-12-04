@@ -1,4 +1,4 @@
-    
+
 ################################################################################
 ########################## SheetMusicAssistant #################################
 
@@ -130,6 +130,42 @@ class FileNavigation(Screen):
                     # fire up loading screen
                     data.loading = True
                     data.file2Load = file
+                    
+
+                    
+##                    ###################
+##                    
+##                    PDFConvert.toGIF('./MusicScores/' + file)
+##                    PDFConvert.toPNG('./MusicScores/' + file)
+##                    data.activeScreen = 'main'
+##
+##            
+##                    
+##                    data.track = []
+##                    data.scoreFile = file
+##                    data.score = PhotoImage(file='./MusicScores/'+ \
+##                                            file[:-4]+'.gif')
+##                    tupData = ImageDetect.convert2playable('./MusicScores/'+\
+##                                                      data.scoreFile[:-4]+\
+##                                                              '.png')
+##                    data.track, data.staves = tupData
+##                    
+##                    
+##                        
+##                    initForPlayBack(data) # initialize other variables for play
+##
+##                    
+##                    initForListening(data) # initialize variables for listening
+##                    data.loading = False
+                    
+class MusicDisplay(Screen):
+    # the interface screen when listening to music
+
+    def drawScore(self, canvas, data):
+        # draws the score on the screen
+        
+    
+        pass
 
 class Button(object):
 
@@ -273,18 +309,12 @@ def mousePressed(event, data):
     elif data.listenBtn.isClick(event, data):
         print('listen clicked')
         # changes screen
-        if data.activeScreen == 'listen':
-            # causes it to stop listening
-            data.activeScreen = 'main'
-        else:
-            data.activeScreen = 'listen'
+        data.activeScreen = 'listen'
         
     elif data.playBtn.isClick(event, data):
-        if data.activeScreen != 'listen':
-            # prevents playing when listening
-            print('play clicked')
-            # changes screen
-            data.activeScreen = 'play'
+        print('play clicked')
+        # changes screen
+        data.activeScreen = 'play'
         
     data.fileNav.scoreSelected(event,data) # checks for file nav
 
@@ -366,7 +396,9 @@ def playBack(data):
                         else:
                             data.scrolling = False
 
-                               
+                        # checking to increase Y position for greendots
+                    
+                        
             else:
                 if note != data.lastNote:
                     data.note += 1
@@ -421,7 +453,7 @@ def initForListening(data):
                                data.staves[stave-1][1])
         
     data.scrollIndex = -1
-    data.listenScrollStart = data.scoreTop
+
     data.greenDotY = []
     for stave in data.staves:
         staveYcoordinate = stave[1]
@@ -429,80 +461,83 @@ def initForListening(data):
         
     data.greenDots = [] # list of tuples of circle centers
     data.greenDotYPosn = 0
-    
                     
 def listening(data):
     if data.end == False:
-        # there's no need for timer delay
+        data.time += data.timerDelay
+            
+        if data.time % data.tempo == 0 and data.time > 0:
+
+            # going to have same time for all
+            bar, note = data.trackPosition
+
+            data.Xposn = data.track[bar][note][1][0]
+            data.Yposn = data.track[bar][note][1][1]
+            musicNote = data.track[bar][note][0]
+            currStave = data.greenDotYPosn
     
-        # going to have same time for all
-        bar, note = data.trackPosition
+            
+            
+            noteName = './Sounds/Notes/' +\
+                       str(musicNote) +\
+                       '.wav'
+            if type(musicNote) == str:
+                # plays a note if it is a note
+                Thread(target=playNote, args=(noteName,)).start()
 
-        # each note or rest's x and y position
-        data.Xposn = data.track[bar][note][1][0]
-        data.Yposn = data.track[bar][note][1][1]
-        musicNote = data.track[bar][note][0]
+                # append green dot centers tuples for drawing
+                data.greenDots.append((data.Xposn,
+                                      data.greenDotY[currStave]))
+            
+            # checking for bar ends
+            if bar != data.lastBar:
+                # last bar of the whole piece is data.lastBar
+                if note != data.lastNote:
+                    data.note += 1
+                    data.trackPosition = (bar, data.note)
 
-        # this thing knows where the current stave is 
-        currStave = data.greenDotYPosn
-        played = False # tracks if the note or rest has been played
-        if type(musicNote) == str:
-            # plays a note if it is a note
-            playedNote = sound.detectNote()
-            while playedNote != musicNote:
-                # keeps listening until the note matches
-                playedNote = sound.detectNote()
-            #print('matched! ',playedNote,' to ', musicNote)
+                else: # last note of the bar
+                    oldBar = data.bar
+                    data.bar += 1
+                    nextBar = data.bar + 1
+                    oldNote = data.note
+                    data.note = 0
+                    data.trackPosition = (data.bar, data.note)
+                    data.lastNote = len(data.track[data.bar]) - 1
 
-            data.greenDots.append((data.Xposn,
-                                  data.greenDotY[currStave]))
-        
-        # checking for bar ends, regardless if rest or not
-        if bar != data.lastBar:
-            # last bar of the whole piece is data.lastBar
-            if note != data.lastNote:
-                # not the last note of the bar
-                data.note += 1
-                data.trackPosition = (bar, data.note)
+                    if bar + 1 != data.lastBar: 
+                    # if next bar has first note x posn less than current
+                    # bar bar x posn, data.scrolling = true
+                    # currX is actually the immediately next note's x posn
+                        currX = data.track[data.bar][data.note][1][0]
+                        nextBarX = data.track[nextBar][data.note][1][0]
 
-            else: # last note of the bar
-                oldBar = data.bar
-                data.bar += 1 # next bar
-                oldNote = data.note
-                data.note = 0 # next note
-                data.trackPosition = (data.bar, data.note) # new trackPosn
-                data.lastNote = len(data.track[data.bar]) - 1
+                        # the Ys are slightly different
+                        oldX = data.track[oldBar][oldNote][1][0]
 
-                if bar + 1 != data.lastBar:
-                # if next bar is not the last bar of the piece
-                # x coordinates of next notes
-                
-                    oldX= data.track[oldBar][oldNote][1][0]
-                    nextX = data.track[data.bar][data.note][1][0]
+                        if oldX > currX:
+                            # draw dots below
+                            data.greenDotYPosn += 1
 
-                    if oldX > nextX:
-                        # draw dots below
-                        data.greenDotYPosn += 1
-                        data.scrolling = True
-                        data.scrollIndex += 1
+                        if currX > nextBarX:
+                            data.scrolling = True
+                            data.scrollIndex += 1
 
-                        # scroll when last note of line is hit
+                        else:
+                            data.scrolling = False
 
-                    else:
-                        data.scrolling = False
-
-                    # checking to increase Y position for greendot=
-                
+                        # checking to increase Y position for greendots
                     
-        else: # bar is the last bar of the piece
-            if note != data.lastNote:
-                data.note += 1
-                data.trackPosition = (bar, data.note)
+                        
+            else:
+                if note != data.lastNote:
+                    data.note += 1
+                    data.trackPosition = (bar, data.note)
 
-            else: # last note, last bar
-                data.end = True
-                data.activeScreen = 'main'
-                print('end')
+                else: # last note, last bar
+                    data.end = True
+                    data.activeScreen = 'main'
+                    print('end')
 
 def loadScore(data):
     ###################
@@ -523,7 +558,7 @@ def loadScore(data):
     data.track, data.staves = tupData
     
     
-    data.scrollScore = 0 # reset scroll back to zero
+        
     initForPlayBack(data) # initialize other variables for play
 
     
@@ -536,12 +571,9 @@ def timerFired(data):
         playBack(data)
                 # try to check for number of lines
         if data.scrolling == True:
-            print('scrolling for play')
-            
             # scroll a specific amount as per each pair of stave dist
             scrollIncrement = data.scrollDist[data.scrollIndex]/\
                               (4*data.tempo/data.timerDelay)
-            print(scrollIncrement)
             
             data.scrollScore += scrollIncrement
             
@@ -556,32 +588,11 @@ def timerFired(data):
         
         listening(data)
 
-        if data.scrolling == True:
-            # checks for scrolling
-            # scroll a specific amount as per each pair of stave dist
-            if data.scrollScore < data.listenScrollStart + \
-               data.scrollDist[data.scrollIndex]:
-                # if there is still scrolling to do
-
-                # smoothscrolling code that may not work
-##                scrollIncrement = 10
-##                data.scrollScore += scrollIncrement
-                # choppy scroll but it works
-                data.scrollScore += data.scrollDist[data.scrollIndex]
-                data.listenScrollStart += data.scrollDist[data.scrollIndex]
-                data.scrolling = False
-
-##            else: # sufficient scroll (only for smooth scrolling)
-##                data.listenScrollStart += data.scrollDist[data.scrollIndex]
-##                data.scrolling = False
-
         if data.end == True:
-            # resets all parameters
             initForListening(data)
             data.scrollScore = 0
             resetGreenDots(data)
             data.scrollIndex = -1
-            data.activeScreen = 'main'
 
     elif data.activeScreen == 'openPDF':
 
@@ -633,13 +644,13 @@ def redrawAll(canvas, data):
             canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
                                 image=data.score,anchor='n')
             drawGreenDots(canvas, data)
-        Screen.drawMenuBar(canvas, data)
+        MusicDisplay.drawMenuBar(canvas, data)
     elif data.activeScreen == 'play':
         if data.score != '': # score is found
             canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
                                 image=data.score,anchor='n')
             drawGreenDots(canvas, data)
-        Screen.drawMenuBar(canvas, data)
+        MusicDisplay.drawMenuBar(canvas, data)
                                    
     
     if data.loading == True:

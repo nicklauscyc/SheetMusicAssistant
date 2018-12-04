@@ -250,7 +250,6 @@ def identifyPitch(scoreFile, template='./MusicNotesTemplate', test=False):
     noteSep2 = staveHeight2/numNotesInStave
 
     numLines = len(allStaves) # number of lines
-    print('allStaves is', allStaves)
     # allStaves is the coordinates of all staves in music
     
     dividers = []
