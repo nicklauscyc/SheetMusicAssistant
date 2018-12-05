@@ -257,11 +257,16 @@ def init(data):
 
     # for load screen
     data.loading = False
+    data.scoreAdjust = 15
+
+    # background image of treble clef, taken from:
+    '''https://u.cubeupload.com/QocIzc.png'''
+    data.rawTreble = PhotoImage(file='./Images/TrebleClef.gif')
+    data.treble = data.rawTreble.subsample(10,y=10) #shrinks the treble
     
 def mousePressed(event, data):
     # use event.x and event y
     if data.openPDFBtn.isClick(event, data):
-        print('pdf clicked')
         # changes screen
         if data.activeScreen != 'openPDF':
             # a pdf options opened first time clicked
@@ -272,7 +277,6 @@ def mousePressed(event, data):
             data.activeScreen = 'main'
         
     elif data.listenBtn.isClick(event, data):
-        print('listen clicked')
         # changes screen
         if data.activeScreen == 'listen':
             # causes it to stop listening
@@ -283,7 +287,6 @@ def mousePressed(event, data):
     elif data.playBtn.isClick(event, data):
         if data.activeScreen != 'listen':
             # prevents playing when listening
-            print('play clicked')
             # changes screen
             data.activeScreen = 'play'
         
@@ -291,7 +294,18 @@ def mousePressed(event, data):
 
 def keyPressed(event, data):
     # use event.char and event.keysym
-    pass
+
+    if data.score != '' and data.score != []:
+        if data.activeScreen == 'main':
+            if event.keysym == 'Down':
+                data.scrollScore += 10
+
+            elif event.keysym == 'Up' and data.scrollScore > 0:
+                data.scrollScore -= 10
+
+            elif event.keysym == 'r':
+                # resets the score to the top
+                data.scrollScore = 0
 
 def playNote(filename):
     # wrapper function from pyaudio's play function
@@ -306,12 +320,7 @@ def playBack(data):
 
             # going to have same time for all
             bar, note = data.trackPosition
-
-            if data.track[bar][note][1][0] < data.Xposn:
-                # time to scroll
-                #data.scrollScore += 100
-                # don't think I need
-                pass
+            
             data.Xposn = data.track[bar][note][1][0]
             data.Yposn = data.track[bar][note][1][1]
             musicNote = data.track[bar][note][0]
@@ -327,7 +336,7 @@ def playBack(data):
                 Thread(target=playNote, args=(noteName,)).start()
 
                 # append green dot centers tuples for drawing
-                data.greenDots.append((data.Xposn,
+                data.greenDots.append((data.Xposn + data.scoreAdjust,
                                       data.greenDotY[currStave]))
             
             # checking for bar ends
@@ -351,24 +360,41 @@ def playBack(data):
                     # bar bar x posn, data.scrolling = true
                     # currX is actually the immediately next note's x posn
                         currX = data.track[data.bar][data.note][1][0]
-                        data.track[nextBar][data.note]
-                        nextBarX = data.track[nextBar][data.note][1][0]
+                        currY = data.track[data.bar][data.note][1][1]
 
-                        # the Ys are slightly different
+                        
+                        # next bar x is the next bar first note 
+                        nextBarX = data.track[nextBar][data.note][1][0]
+                        nextBarY = data.track[nextBar][data.note][1][1]
+                        
+                        print(data.track[nextBar])
+                        currBarLastY = data.track[data.bar][3][1][1]
+
+                        # old bar X and Y is the note just past
                         oldX = data.track[oldBar][oldNote][1][0]
+                        oldY = data.track[oldBar][oldNote][1][1]
+
+                        # resetting the dots
+                        if currX < oldX and currY < oldY:
+                            # flip page
+                            resetGreenDots(data)
+                            data.greenDotYPosn = -1
+                            data.pageNum += 1
+                            
+                                
 
                         if oldX > currX:
-                            # draw dots below
+                            # update dot drawing
                             data.greenDotYPosn += 1
 
-                        if currX > nextBarX:
+                        if nextBarX < currX:
                             data.scrolling = True
                             data.scrollIndex += 1
+                                
 
                         else:
                             data.scrolling = False
-
-                               
+                                
             else:
                 if note != data.lastNote:
                     data.note += 1
@@ -376,10 +402,9 @@ def playBack(data):
 
                 else: # last note, last bar
                     data.end = True
+                    data.pageNum = 0
                     data.activeScreen = 'main'
-                    print('end')
-                    
-                    
+                
 
 def resetGreenDots(data):
     # resets all the green dots
@@ -456,7 +481,7 @@ def listening(data):
                 playedNote = sound.detectNote()
             #print('matched! ',playedNote,' to ', musicNote)
 
-            data.greenDots.append((data.Xposn,
+            data.greenDots.append((data.Xposn + data.scoreAdjust,
                                   data.greenDotY[currStave]))
         
         # checking for bar ends, regardless if rest or not
@@ -480,9 +505,21 @@ def listening(data):
                 # x coordinates of next notes
                 
                     oldX= data.track[oldBar][oldNote][1][0]
-                    nextX = data.track[data.bar][data.note][1][0]
+                    oldY = data.track[oldBar][oldNote][1][1]
+                    currX = data.track[data.bar][data.note][1][0]
+                    currY = data.track[data.bar][data.note][1][1]
 
-                    if oldX > nextX:
+                    # resetting the dots and flip page
+                    if currX < oldX and currY < oldY:
+                        # flip page
+                        resetGreenDots(data)
+                        data.greenDotYPosn = -1
+                        data.pageNum += 1
+                        # resets the scroll
+                        data.listenScrollStart = data.scoreTop
+                        data.scrollScore = 0 # resets the scroll
+
+                    if oldX > currX:
                         # draw dots below
                         data.greenDotYPosn += 1
                         data.scrolling = True
@@ -504,7 +541,8 @@ def listening(data):
             else: # last note, last bar
                 data.end = True
                 data.activeScreen = 'main'
-                print('end')
+                data.pageNum = 0
+    
 
 def loadScore(data):
     ###################
@@ -541,42 +579,34 @@ def loadScore(data):
         #for page in range(1):
         for page in range(data.numPages):
             fileNameNoExt = './MusicScores/' + file[:-4] + '-' + str(page)
-            print('filename no ext is',fileNameNoExt)
 
-            eachScore = PhotoImage(file=fileNameNoExt+'.gif')
+            data.score.append(PhotoImage(file=fileNameNoExt+'.gif'))
+            # switch data.score later
+            
             tupData = ImageDetect.convert2playable(fileNameNoExt+'.png')
 
             indivTrack, indivStave = tupData
             data.track.extend(indivTrack)
-            data.staves.append([indivStave]) # list of lists, each inner list is
-            ##### u must change this to append
-            # a stave ends for 1 page
-            data.score.append(eachScore)
+            data.staves.extend(indivStave) # list of scroll distances
+            
 
     finalTrack = []
     for bar in data.track:
         if bar != []: # cleaning off [] elements
             finalTrack.append(bar)
-        #print('data.staves is', data.staves)
-        #print('data.track is', data.track)
     data.track = [] + finalTrack # non aliased
+
+    data.scrollScore = 0  # reset scroll back to zero
+    initForPlayBack(data)  # initialize other variables for play
+    initForListening(data)  # initialize variables for listening
+    
+    data.loading = False
 
     for bar in data.track:
         print(bar)
 
     for stave in data.staves:
-        if stave == []:
-            data.staves.remove(stave)
-
-    for stave in data.staves:
         print(stave)
-    data.scrollScore = 0  # reset scroll back to zero
-    initForPlayBack(data)  # initialize other variables for play
-
-    initForListening(data)  # initialize variables for listening
-    data.loading = False
-
-    print('last bar index', data.lastBar)
 
 def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
@@ -634,6 +664,7 @@ def timerFired(data):
         if data.loading == True:
             ###################
             data.loading = False
+            
             loadScore(data)
             # loads the actual score after 100 millisecond of clicking
 
@@ -645,28 +676,47 @@ def drawGreenDots(canvas, data):
     for center in range(len(data.greenDots)):
         r = 10
         X, Y = greenDots[center]
-        staveOffset = 290/3
+        data.staveOffset1 = 290/3
+        data.staveOffset2 = -60
         xOffset = 10
 
-        canvas.create_oval(X - r + xOffset,
-                           Y - r - data.scrollScore + staveOffset + \
-                           data.scoreTop,
-                           X + r + xOffset,
-                           Y + r - data.scrollScore + staveOffset + \
-                           data.scoreTop,
-                           fill=color(0,255,0),
-                           width=0)
-        
+        if data.pageNum == 0:
+            canvas.create_oval(X - r + xOffset,
+                               Y - r - data.scrollScore + data.staveOffset1 + \
+                               data.scoreTop,
+                               X + r + xOffset,
+                               Y + r - data.scrollScore + data.staveOffset1 + \
+                               data.scoreTop,
+                               fill=color(0,255,0),
+                               width=0)
+        else: # not on the first page
+            canvas.create_oval(X - r + xOffset,
+                               Y - r - data.scrollScore + data.staveOffset2 + \
+                               data.scoreTop,
+                               X + r + xOffset,
+                               Y + r - data.scrollScore + data.staveOffset2 + \
+                               data.scoreTop,
+                               fill=color(0,255,0),
+                               width=0)
+            
+            
 def redrawAll(canvas, data):
     # draw in canvas
     #print('data.score[0] is',data.score)
+    # draw the background first
+    trebleY = data.scoreTop + (data.height - data.scoreTop)/2
+    trebleX = data.width/2
+    
+                        
     if data.activeScreen == 'main':
+        canvas.create_image(trebleX, trebleY, image=data.treble)
         if data.score != '' and data.score != []: # score is found
-            canvas.create_image(data.width/2, data.scoreTop,
+            canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
                                 image=data.score[data.pageNum],anchor='n')
         Screen.drawMenuBar(canvas, data)
         
     elif data.activeScreen == 'openPDF':
+        canvas.create_image(trebleX, trebleY, image=data.treble)
         if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop,
                                 image=data.score[data.pageNum],anchor='n')
@@ -681,6 +731,7 @@ def redrawAll(canvas, data):
                                 image=data.score[data.pageNum],anchor='n')
             drawGreenDots(canvas, data)
         Screen.drawMenuBar(canvas, data)
+        
     elif data.activeScreen == 'play':
         if data.score != '' and data.score != []: # score is found
             canvas.create_image(data.width/2, data.scoreTop - data.scrollScore,
@@ -691,7 +742,7 @@ def redrawAll(canvas, data):
     
     if data.loading == True:
         # draws the loading screen
-        print('screen is loading')
+        print('loading score')
         loadWidth = 900
         loadHeight = 100
         
