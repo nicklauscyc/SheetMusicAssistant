@@ -2,21 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d7e08be-f5a0-4c76-926d-758626f3c871" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImageDetectMulti.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ImageRecognition/ImageDetect.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImageRecognition/ImageDetect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImageRecognition/PDFConvert.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImageRecognition/PDFConvert.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/BasicScore.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/BasicScore.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.gif" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.gif" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicScores/Sample1.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Sample1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Scalic_Passage.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Scalic_Passage.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PDFConvertMulti.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="539" column="28" selection-start-line="539" selection-start-column="28" selection-end-line="539" selection-end-column="28" />
+            <state relative-caret-position="36">
+              <caret line="589" column="37" selection-start-line="589" selection-start-column="37" selection-end-line="589" selection-end-column="37" />
               <folding>
                 <element signature="e#551#572#0" expanded="true" />
               </folding>
@@ -40,9 +31,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_trace_dispatch_regular.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="48">
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ImageDetect.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-7138">
+              <caret line="139" column="4" lean-forward="true" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ImageRecognition/ImageDetect.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1213">
+              <caret line="399" lean-forward="true" selection-start-line="399" selection-end-line="399" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Sounds/sound.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1392">
+            <state relative-caret-position="694">
               <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
               <folding>
                 <element signature="e#421#435#0" expanded="true" />
@@ -69,8 +87,22 @@
       <find>print('data</find>
       <find>.extend</find>
       <find>REDRAW</find>
-      <find>data.staves</find>
+      <find>test</find>
+      <find>print(</find>
+      <find>print</find>
+      <find>initForPlayBack</find>
+      <find>data.lastBar</find>
+      <find>init</find>
+      <find>loadSc</find>
       <find>loadScore</find>
+      <find>data.loading</find>
+      <find>scoreSelected</find>
+      <find>data.staves</find>
+      <find>data.pageNum</find>
+      <find>data.numStaves</find>
+      <find>playBack</find>
+      <find>staveOffset</find>
+      <find>data.scrollScore</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -80,6 +112,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+        <option value="$PROJECT_DIR$/ImageDetect.py" />
+        <option value="$PROJECT_DIR$/ImageRecognition/ImageDetect.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -92,12 +126,32 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+    <navigator proportions="" version="1">
       <compactDirectories Scope="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
+              <item name="ImageRecognition" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
+              <item name="MusicScores" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -138,7 +192,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="ImageDetect" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SheetMusicAssistant" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ImageDetect.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="SheetMusicAssistant" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -184,6 +259,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.ImageDetect" />
       </list>
     </recent_temporary>
   </component>
@@ -198,6 +274,14 @@
       <option name="presentableId" value="Default" />
       <updated>1543284163464</updated>
     </task>
+    <task id="LOCAL-00001" summary="in the process of doing page flip">
+      <created>1543963461354</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1543963461354</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -218,8 +302,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32902467" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34077555" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.47238544" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.7132785" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32902467" />
@@ -231,6 +315,10 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="in the process of doing page flip" />
+    <option name="LAST_COMMIT_MESSAGE" value="in the process of doing page flip" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
@@ -248,22 +336,43 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ImageDetectMulti.py" />
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/Sounds/sound.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="539" column="28" selection-start-line="539" selection-start-column="28" selection-end-line="539" selection-end-column="28" />
+        <state relative-caret-position="694">
+          <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
           <folding>
-            <element signature="e#551#572#0" expanded="true" />
+            <element signature="e#421#435#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Sounds/sound.py">
+    <entry file="file://$PROJECT_DIR$/ImageRecognition/ImageDetect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1392">
-          <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
+        <state relative-caret-position="1213">
+          <caret line="399" lean-forward="true" selection-start-line="399" selection-end-line="399" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ImageDetect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7138">
+          <caret line="139" column="4" lean-forward="true" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_trace_dispatch_regular.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="589" column="37" selection-start-line="589" selection-start-column="37" selection-end-line="589" selection-end-column="37" />
           <folding>
-            <element signature="e#421#435#0" expanded="true" />
+            <element signature="e#551#572#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -218,18 +218,18 @@ def initForPlayBack(data):
     data.scrolling = False
 
     # initialize the score specific variables    
-    data.numStaves = len(data.staves)
+    data.numStaves = len(data.staves[data.pageNum])
     
     data.scrollDist = []
     
-    for stave in range(1,len(data.staves)):
-        data.scrollDist.append(data.staves[stave][1]-\
-                               data.staves[stave-1][1])
+    for stave in range(1,len(data.staves[data.pageNum])):
+        data.scrollDist.append(data.staves[data.pageNum][stave][1]-\
+                               data.staves[data.pageNum][stave-1][1])
         
     data.scrollIndex = -1
 
     data.greenDotY = []
-    for stave in data.staves:
+    for stave in data.staves[data.pageNum]:
         staveYcoordinate = stave[1]
         data.greenDotY.append(staveYcoordinate)
         
@@ -414,18 +414,18 @@ def initForListening(data):
     data.scrolling = False
 
     # initialize the score specific variables    
-    data.numStaves = len(data.staves)
+    data.numStaves = len(data.staves[data.pageNum])
     
     data.scrollDist = []
     
-    for stave in range(1,len(data.staves)):
-        data.scrollDist.append(data.staves[stave][1]-\
-                               data.staves[stave-1][1])
+    for stave in range(1,len(data.staves[data.pageNum])):
+        data.scrollDist.append(data.staves[data.pageNum][stave][1]-\
+                               data.staves[data.pageNum][stave-1][1])
         
     data.scrollIndex = -1
     data.listenScrollStart = data.scoreTop
     data.greenDotY = []
-    for stave in data.staves:
+    for stave in data.staves[data.pageNum]:
         staveYcoordinate = stave[1]
         data.greenDotY.append(staveYcoordinate)
         
