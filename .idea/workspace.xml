@@ -3,11 +3,30 @@
   <component name="ChangeListManager">
     <list default="true" id="0d7e08be-f5a0-4c76-926d-758626f3c871" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImageRecognition/ImageDetect.py" beforeDir="false" afterPath="$PROJECT_DIR$/ImageRecognition/ImageDetect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Full-1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageRecognition/ImageDetectSingle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageRecognition/PDFConvertSingle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/BasicScore.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/BasicScore.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/BasicScore.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/GoldenRodFull-0.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/GoldenRodFull-0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/GoldenRodFull-1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/GoldenRodFull-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/GoldenRodFull.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Goldenrod_Theme.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/New Score.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/New Score.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/New Score.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Sad_Piano.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Sad_Piano.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicScores/Sample1.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Sample1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Scalic_Passage.gif" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Scalic_Passage.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Scalic_Passage.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Scalic_Passage.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicScores/Scalic_Passage.png" beforeDir="false" afterPath="$PROJECT_DIR$/MusicScores/Scalic_Passage.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sounds/ModifiedRecord.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sounds/a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sounds/soundsOld.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,49 +40,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="589" column="37" selection-start-line="589" selection-start-column="37" selection-end-line="589" selection-end-column="37" />
+            <state relative-caret-position="462">
+              <caret line="805" column="9" selection-start-line="805" selection-start-column="4" selection-end-line="805" selection-end-column="9" />
               <folding>
                 <element signature="e#551#572#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_trace_dispatch_regular.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="83" selection-start-line="83" selection-end-line="83" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ImageDetect.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7138">
-              <caret line="139" column="4" lean-forward="true" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ImageRecognition/ImageDetect.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1213">
-              <caret line="399" lean-forward="true" selection-start-line="399" selection-end-line="399" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Sounds/sound.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="694">
-              <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
-              <folding>
-                <element signature="e#421#435#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -89,7 +69,6 @@
       <find>REDRAW</find>
       <find>test</find>
       <find>print(</find>
-      <find>print</find>
       <find>initForPlayBack</find>
       <find>data.lastBar</find>
       <find>init</find>
@@ -103,6 +82,7 @@
       <find>playBack</find>
       <find>staveOffset</find>
       <find>data.scrollScore</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -131,27 +111,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
-              <item name="ImageRecognition" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
-              <item name="MusicScores" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -163,6 +122,17 @@
               <item name="SheetMusicAssistant" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="ImageRecognition" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SheetMusicAssistant" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SheetMusicAssistant" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -302,7 +272,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32902467" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.47238544" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.09283196" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.7132785" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -336,9 +306,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ImageDetectMulti.py" />
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_trace_dispatch_regular.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1972">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ImageDetect.py" />
+    <entry file="file://$PROJECT_DIR$/ImageRecognition/ImageDetect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11542">
+          <caret line="399" selection-start-line="399" selection-end-line="399" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Sounds/sound.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="694">
+        <state relative-caret-position="1392">
           <caret line="55" column="26" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
           <folding>
             <element signature="e#421#435#0" expanded="true" />
@@ -346,31 +331,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ImageRecognition/ImageDetect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1213">
-          <caret line="399" lean-forward="true" selection-start-line="399" selection-end-line="399" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ImageDetect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7138">
-          <caret line="139" column="4" lean-forward="true" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_trace_dispatch_regular.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="589" column="37" selection-start-line="589" selection-start-column="37" selection-end-line="589" selection-end-column="37" />
+        <state relative-caret-position="462">
+          <caret line="805" column="9" selection-start-line="805" selection-start-column="4" selection-end-line="805" selection-end-column="9" />
           <folding>
             <element signature="e#551#572#0" expanded="true" />
           </folding>

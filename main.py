@@ -367,7 +367,7 @@ def playBack(data):
                         nextBarX = data.track[nextBar][data.note][1][0]
                         nextBarY = data.track[nextBar][data.note][1][1]
                         
-                        print(data.track[nextBar])
+
                         currBarLastY = data.track[data.bar][3][1][1]
 
                         # old bar X and Y is the note just past
@@ -479,7 +479,7 @@ def listening(data):
             while playedNote != musicNote:
                 # keeps listening until the note matches
                 playedNote = sound.detectNote()
-            #print('matched! ',playedNote,' to ', musicNote)
+
 
             data.greenDots.append((data.Xposn + data.scoreAdjust,
                                   data.greenDotY[currStave]))
@@ -602,11 +602,6 @@ def loadScore(data):
     
     data.loading = False
 
-    for bar in data.track:
-        print(bar)
-
-    for stave in data.staves:
-        print(stave)
 
 def timerFired(data):
     if data.activeScreen == 'play' and data.track != []:
@@ -702,7 +697,7 @@ def drawGreenDots(canvas, data):
             
 def redrawAll(canvas, data):
     # draw in canvas
-    #print('data.score[0] is',data.score)
+
     # draw the background first
     trebleY = data.scoreTop + (data.height - data.scoreTop)/2
     trebleX = data.width/2
