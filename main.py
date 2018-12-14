@@ -601,6 +601,8 @@ def loadScore(data):
     initForListening(data)  # initialize variables for listening
     
     data.loading = False
+    for bar in data.track:
+        print(bar)
 
 
 def timerFired(data):
